@@ -47,21 +47,30 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
 % ========== sEMG decomposition ===========================================
 % Peak detection
     % Get active threshold & baseline noise sd for each channel.
-    [thresh, noise_sigma] = getthreshold(fdata(1:10000,:), 4);
+    [thresh, noise_sigma] = getthreshold(fdata(1:15000,:), 4);
     % Get appropriate spike width.
     spike_width = goodwidth(mu_len_t/sig.dt);
     % Detect peaks whose amplitudes exceed the threshold.
     [spikes, spike_times] = getspikes(fdata, thresh, spike_width,'Plot', 1);
 % Generate MU templates
+
     mu_tmplts = genMUTemplates(spikes, spike_times, max_ipi, noise_sigma);
+    %% test template
+    mu_len = mu_tmplts.mu_len
+    for i=1:25
+        subplot(5,5,i)
+        for j=1:4
+            plot(mu_tmplts.shape(((j-1)*mu_len+1):j*mu_len,i));
+            hold on
+        end
+    end
     if (mu_tmplts.mu_num == 0)
         decomp_result = [];
         return;
     end
     mu_tmplts = mergeMU(mu_tmplts, 0.7);
-
+    
 % Generate firing trains
-%     [firings, resdata] = getFirings_old(fdata, mu_tmplts);
     [spikes, spike_times] = getspikes(fdata,thresh,spike_width,'MergeMode','All');
     [result, resdata] = getFirings(fdata, spikes, spike_times, mu_tmplts);
 % ========== End of sEMG decomposition ====================================
