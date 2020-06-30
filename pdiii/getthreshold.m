@@ -34,8 +34,8 @@ function [thresholds, sds] = getthreshold (sig, COEF)
         i = find(COEF*sd(:,chn)>s(:,chn), 1, 'last');
         if isempty (i)
             fprintf(sprintf('[Warning]:No physiological baseline.'));
-            thresholds = s(round(.9*l), chn);  % non-physiological baseline
-            sds(chn) = sd(round(.9*l), chn);
+            thresholds = s(round(.99*l), chn);  % non-physiological baseline
+            sds(chn) = sd(round(.99*l), chn);
         else
             thresholds(chn) = s(i,chn);
             sds(chn) = sd(i,chn);
