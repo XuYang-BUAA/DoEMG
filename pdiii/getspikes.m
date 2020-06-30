@@ -10,7 +10,7 @@ function [spikes, spike_times] = getspikes(sig, thresh, width, varargin)
 %                                                                         *
 %  OUTPUT:                                                                *
 %    spikes          -- spikes waves with input width                     *
-%    spike_times     -- standard deviation of baseline noise              *
+%    spike_times     -- times of peaks                                    *
 %                                                                         *
 %  WARNINGS:                                                              *
 %    None                                                                 *
