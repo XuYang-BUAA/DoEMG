@@ -1,6 +1,22 @@
 function [ mu_tmplts ] = genMUTemplates(spikes, spike_times, max_ipi, noise_sigma)
-% Generate MUAP templates from raw sEMG data.
-
+% =========================================================================
+%              Generate MUAP templates from raw sEMG data.                *
+%                                                                         *
+%                                                                         *
+%  INPUT:                                                                 *
+%    spikes          -- *
+%    spike_times     -- *
+%    max_ipi         -- *
+%    noise_sigma     -- *
+%                                                                         *
+%  OUTPUT:                                                                *
+%    mu_tmplts       -- *
+%                                                                         *
+%  WARNINGS:   none                                                       *
+%                                                                         *
+%  HISTORY:                                                               *
+%    7/1/2020 : XuY update                                                *
+% =========================================================================
 %========== Settings and Parameters =======================================
     % Settings
     op_chn_merge = 'Series';
@@ -50,7 +66,7 @@ function [ mu_tmplts ] = genMUTemplates(spikes, spike_times, max_ipi, noise_sigm
                     [k1sqrx, k2sqrx, k3sqrx, alphax] = caldiff(candi, template_p);
                     k1sq(:,i) = diag(k1sqrx);
                     k2sq(:,i) = diag(k2sqrx);
-                    k3sq(:,i) = diag(k3sqrx);
+                    k3sq(:,i) = diag(k3sqrx); 
                     alpha(:,i) = diag(alphax);
                 end
                 flag_mu_match = all([all(k1sq < p_accept_region.k1sq);
@@ -66,28 +82,12 @@ function [ mu_tmplts ] = genMUTemplates(spikes, spike_times, max_ipi, noise_sigm
             % MU assignment
             % Calculate MAP
             Pui = caloccurprob(tn - lastfirings, ipi_mius, ipi_sigmas);
-%             Pui(tn - lastfirings > max_ipi) = 0;
-%             Pui(ipi_nums == 0) = 0;
-%             if all(Pui == 0)
-%                 Pui(:) = 1;
-%             else
-%                 Pui(ipi_nums == 0) = mean(Pui(Pui>0));
-%             end
             Pui = Pui/sum(Pui);
             Pcandi = sum((repmat(candi_s, 1, mu_num) - template_s).^2);
+            %Among these possible mu templates, the one for which the cost
+            %has the least value is detected as firing MU.
             cost = Pcandi - 2 * mean(noise_sigma)^2 * log(Pui);
             mu_ind = find(cost == min(cost(flag_mu_match)));
-            % Validation
-%             if ~flag_mu_match(mu_ind)
-%                 fprintf(...
-%                     sprintf('[Warning]: spike#%d is assigned to rejected MU#%d.\n',...
-%                     spike_ind, mu_ind));
-%                 figure;
-%                 plot(candi_s);
-%                 hold on;
-%                 plot(template_s(:,flag_mu_match),'--');
-%                 plot(template_s(:,mu_ind),'-.');
-%             end
             % Update MU
             template_s(:, mu_ind) = (5 * template_s(:, mu_ind) + candi_s) / 6;
             % Store the template data.
