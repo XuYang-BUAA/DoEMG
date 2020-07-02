@@ -59,7 +59,7 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
 %     %%test template mem
 %     figure()
 %     for i=1:mu_tmplts.mu_num
-%         %subplot(5,5,i)
+%         subplot(5,5,i)
 %         for j=1:length(mu_tmplts.tmplt_mem)
 %             if(mu_tmplts.mu_id==mu_tmplts.tmplt_mem(1,j))
 %                 plot(mu_tmplts.tmplt_mem(3:77,j));
@@ -72,14 +72,16 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
         decomp_result = [];
         return;
     end
-    mu_tmplts = mergeMU(mu_tmplts, 0.75);
+%    mu_tmplts = mergeMU(mu_tmplts, 0.7);
     mu_len = mu_tmplts.mu_len
+    t_mu = (t0:mu_len-1)' * dt;
     for i=1:mu_tmplts.mu_num
-        subplot(5,5,i)
+        subplot(3,5,i)
         
         for j=1:ch_num
-            plot(mu_tmplts.shape(((j-1)*mu_len+1):j*mu_len,i)+(j-1)/2);
+            plot(t_mu,mu_tmplts.shape(((j-1)*mu_len+1):j*mu_len,i));%+(j-1)/2);
             hold on;
+            axis([t_mu(1),t_mu(mu_len),-1,1])
         end
     end
 
