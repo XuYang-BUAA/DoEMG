@@ -56,20 +56,33 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
 
     mu_tmplts = genMUTemplates(spikes, spike_times, max_ipi, noise_sigma);
     %% test template
-    mu_len = mu_tmplts.mu_len
-    for i=1:25
-        subplot(5,5,i)
-        for j=1:4
-            plot(mu_tmplts.shape(((j-1)*mu_len+1):j*mu_len,i));
-            hold on
-        end
-    end
+%     %%test template mem
+%     figure()
+%     for i=1:mu_tmplts.mu_num
+%         %subplot(5,5,i)
+%         for j=1:length(mu_tmplts.tmplt_mem)
+%             if(mu_tmplts.mu_id==mu_tmplts.tmplt_mem(1,j))
+%                 plot(mu_tmplts.tmplt_mem(3:77,j));
+%                 hold on
+%             end
+%         end
+%     end
+            
     if (mu_tmplts.mu_num == 0)
         decomp_result = [];
         return;
     end
-    mu_tmplts = mergeMU(mu_tmplts, 0.7);
-    
+    mu_tmplts = mergeMU(mu_tmplts, 0.75);
+    mu_len = mu_tmplts.mu_len
+    for i=1:mu_tmplts.mu_num
+        subplot(5,5,i)
+        
+        for j=1:ch_num
+            plot(mu_tmplts.shape(((j-1)*mu_len+1):j*mu_len,i)+(j-1)/2);
+            hold on;
+        end
+    end
+
 % Generate firing trains
     [spikes, spike_times] = getspikes(fdata,thresh,spike_width,'MergeMode','All');
     [result, resdata] = getFirings(fdata, spikes, spike_times, mu_tmplts);

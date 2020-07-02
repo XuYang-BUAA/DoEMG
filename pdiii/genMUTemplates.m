@@ -44,6 +44,10 @@ function [ mu_tmplts ] = genMUTemplates(spikes, spike_times, max_ipi, noise_sigm
 % Process of finding MU Tamplates.
     for spike_ind = 1:spike_num
         candi = permute(spikes(:,spike_ind,:),[1 3 2]);
+        
+        %hanning windows
+        candi = hanning(spike_width).*candi;
+        
         tn = spike_times(spike_ind);
          
         % Check if candi is a new template.

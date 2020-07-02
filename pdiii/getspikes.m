@@ -61,7 +61,8 @@ function [spikes, spike_times] = getspikes(sig, thresh, width, varargin)
     % Mark the peaks and plot.
     if op_flag_plot
         figure();
-        h = markpeaks(sig, mergedspktms);
+        %h = markpeaks(sig, mergedspktms);
+        h = markpeaks(peaks,mergedspktms);
     end
     
     % Extract signal segments.

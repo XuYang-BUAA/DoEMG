@@ -1,5 +1,30 @@
 function [ firings, resdata ] = getFirings(rdata, spikes, spike_train, mus)
-%Get MU firing trains.
+% =========================================================================
+%                          Get MU firing trains.                          *
+%                                                                         *
+%  INPUT:                                                                 *
+%    rdata           -- sEMG data                                         *
+%    spikes          -- firing segments                                   *
+%    spike_train     -- timings of firing segments                        *
+%    mus             -- mu templates                                      *
+%                    -- members:                                          *
+%                    -- shape      :template signal segments              *
+%                    -- ch_num     :channel number                        *
+%                    -- tmplt_mem  :memory of all templates               *
+%                    -- mu_num     :MU number                             *
+%                    -- mu_len     :length of MU segment                  *
+%                    -- fire_times :firing times of each MU               *
+%                    -- mu_id      :id index of MU templates              *
+%                                                                         *
+%  OUTPUT:                                                                *
+%    firings         -- merged MU templates                               *
+%    resdata         -- residual data                                     *
+%                                                                         *
+%  WARNINGS:   none                                                       *
+%                                                                         *
+%  HISTORY:                                                               *
+%    7/2/2020 : XuY update                                                *
+% =========================================================================
 % =========================================================================
 % =========== Basic information & Settings=================================
 % =========================================================================

@@ -20,8 +20,14 @@
 clear all;clc;
 %%
 load('decomp_lpy_cycle.mat');
-sEMG = signals{1,1};
+% load('M1_trial1.mat');
+% sEMG.data = data(1,:)';
+% sEMG.dt = 1/10240;
+% sEMG.t0 = 0;
+% sEMG.chn_num = 1;
 
+
+sEMG = signals{1,1};
 sEMG.data = signals{1,1}.data(600000:680000,:);
 newdata = filter(filter5khz_bandpass,sEMG.data);
 sEMG.data = newdata;
@@ -31,18 +37,24 @@ sEMG.chn_num = signals{1, 1}.chn_num;
 
 sEMG.data = sEMG.data - repmat(mean(sEMG.data), length(sEMG.data), 1);
 N = size(sEMG.data);
-% Generate Time Label
 t = (sEMG.t0:N-1)' * sEMG.dt;
+
+
+
+% Generate Time Label
 
 
 figure()
 plot(t,sEMG.data+2);
 hold on;
+newdata = filter(filter10khz,sEMG.data);
+%sEMG.data = newdata;
+
 plot(t,newdata);
 hold on
 
 %[result, resdata] = PD3(sEMG, 0.015);
-result = PD3(sEMG, 0.010,0);
+result = PD3(sEMG, 0.015,0);
 
 %%
 plot_decomp_result(sEMG,result);

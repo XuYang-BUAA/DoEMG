@@ -11,8 +11,8 @@ function Hd = filter5khz_bandpass
 Fs = 5000;  % Sampling Frequency
 
 N   = 2;     % Order
-Fc1 = 20;    % First Cutoff Frequency
-Fc2 = 500;  % Second Cutoff Frequency
+Fc1 = 50;    % First Cutoff Frequency
+Fc2 = 1000;  % Second Cutoff Frequency
 
 % Construct an FDESIGN object and call its BUTTER method.
 h  = fdesign.bandpass('N,F3dB1,F3dB2', N, Fc1, Fc2, Fs);
