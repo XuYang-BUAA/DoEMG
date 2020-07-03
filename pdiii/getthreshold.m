@@ -37,7 +37,7 @@ function [thresholds, sds] = getthreshold (sig, COEF)
             thresholds = s(round(.99*l), chn);  % non-physiological baseline
             sds(chn) = sd(round(.99*l), chn);
         else
-            thresholds(chn) = s(i,chn);
+            thresholds(chn) = 2*s(i,chn);
             sds(chn) = sd(i,chn);
         end
     end

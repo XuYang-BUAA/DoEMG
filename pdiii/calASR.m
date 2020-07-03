@@ -1,13 +1,14 @@
 function [asr] = calASR(t, d)
 % =========================================================================
-%        estimate of the probability that MUAP occured                    *
+%               calculate Absolute Shape Rating (ASR)                     *
+%     Aliasing Rejection in Precision Decomposition of EMG Signals 2008   *
 %                                                                         *
 %  INPUT:                                                                 *
-%    t               -- mu templates shap                                         *
-%    d               -- spike timing                                  *
+%    t               -- mu templates shap                                 *
+%    d               -- spike timing                                      *
 %                                                                         *
 %  OUTPUT:                                                                *
-%    asr             --                           *
+%    asr             -- Absolute Shape Rating                             *
 %                                                                         *
 %  WARNINGS:   none                                                       *
 %                                                                         *

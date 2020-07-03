@@ -40,7 +40,7 @@ function [ firings, resdata ] = getFirings(rdata, spikes, spike_train, mus)
     tmplt_mem = mus.tmplt_mem;
     
     asr_match_thres = 0.2;
-    
+    spikes=hanning(mu_len).*spikes;
     [~, spk_num, ~] = size(spikes);
     spikes = reshape(permute(spikes,[1 3 2]), [], spk_num);
     

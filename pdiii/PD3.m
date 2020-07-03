@@ -51,7 +51,7 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
     % Get appropriate spike width.
     spike_width = goodwidth(mu_len_t/sig.dt);
     % Detect peaks whose amplitudes exceed the threshold.
-    [spikes, spike_times] = getspikes(fdata, thresh, spike_width,'Plot', 1);
+    [spikes, spike_times] = getspikes(fdata, thresh, spike_width,'Plot', 0);
 % Generate MU templates
 
     mu_tmplts = genMUTemplates(spikes, spike_times, max_ipi, noise_sigma);
@@ -72,11 +72,11 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
         decomp_result = [];
         return;
     end
-%    mu_tmplts = mergeMU(mu_tmplts, 0.7);
+    %mu_tmplts = mergeMU(mu_tmplts, 0.7);
     mu_len = mu_tmplts.mu_len
     t_mu = (t0:mu_len-1)' * dt;
     for i=1:mu_tmplts.mu_num
-        subplot(3,5,i)
+        subplot(5,5,i)
         
         for j=1:ch_num
             plot(t_mu,mu_tmplts.shape(((j-1)*mu_len+1):j*mu_len,i));%+(j-1)/2);
@@ -86,8 +86,9 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
     end
 
 % Generate firing trains
-    [spikes, spike_times] = getspikes(fdata,thresh,spike_width,'MergeMode','All');
-    [result, resdata] = getFirings(fdata, spikes, spike_times, mu_tmplts);
+%     [spikes, spike_times] = getspikes(fdata,thresh,spike_width,'MergeMode','All');
+%     [result, resdata] = getFiringsNew(fdata, spikes, spike_times, mu_tmplts);
+    [result, resdata] = getFiringsNew(fdata, mu_tmplts,thresh,spike_width);
 % ========== End of sEMG decomposition ====================================
 
     decomp_result.firings = result;
