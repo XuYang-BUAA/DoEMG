@@ -18,18 +18,19 @@
 %==========================================================================
 %%
 clear all;clc;
+close all;
 %%
-load('decomp_lpy_cycle.mat');
-% load('M1_trial1.mat');
+
+% load('triangle.mat');
 % sEMG.data = data(1,:)';
 % sEMG.dt = 1/10240;
 % sEMG.t0 = 0;
 % sEMG.chn_num = 1;
 
-
+load('decomp_lpy_cycle.mat');
 sEMG = signals{1,1};
 sEMG.data = signals{1,1}.data(600000:680000,:);
-newdata = filter(filter5khz_bandpass,sEMG.data);
+newdata = filter(filter5khz,sEMG.data);
 sEMG.data = newdata;
 sEMG.dt = signals{1,1}.dt;
 sEMG.t0 = signals{1,1}.t0;
@@ -46,15 +47,14 @@ t = (sEMG.t0:N-1)' * sEMG.dt;
 
 figure()
 plot(t,sEMG.data+2);
+%plot(sEMG.data+2);
 hold on;
-newdata = filter(filter10khz,sEMG.data);
-%sEMG.data = newdata;
 
 plot(t,newdata);
 hold on
 
 %[result, resdata] = PD3(sEMG, 0.015);
-result = PD3(sEMG, 0.015,0);
+result = PD3(sEMG, 0.02,0);
 
 %%
 plot_decomp_result(sEMG,result);

@@ -43,7 +43,7 @@ function [ newMUPool ] = mergeMU( mus, prob )
     P(1:mu_num+1:end) = 0;
     [r,c] = find(P>prob);
     G = graph(r,c,P(r+(c-1)*mu_num),cellstr(num2str((mus.mu_id)')));
-     figure; plot(G,'NodeLabel',G.Nodes.Name,'EdgeLabel',G.Edges.Weight);
+    % figure; plot(G,'NodeLabel',G.Nodes.Name,'EdgeLabel',G.Edges.Weight);
 %     title(sprintf('P = %f', prob));
     [bin, binsize] = conncomp(G);
     bin_idxs = find(binsize > 1);

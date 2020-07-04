@@ -51,9 +51,9 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
     % Get appropriate spike width.
     spike_width = goodwidth(mu_len_t/sig.dt);
     % Detect peaks whose amplitudes exceed the threshold.
+    %thresh = 0.22;
     [spikes, spike_times] = getspikes(fdata, thresh, spike_width,'Plot', 0);
 % Generate MU templates
-
     mu_tmplts = genMUTemplates(spikes, spike_times, max_ipi, noise_sigma);
     %% test template
 %     %%test template mem
@@ -72,9 +72,11 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
         decomp_result = [];
         return;
     end
-    %mu_tmplts = mergeMU(mu_tmplts, 0.7);
-    mu_len = mu_tmplts.mu_len
+    mu_tmplts = mergeMU(mu_tmplts, 0.7);
+    %test
+    mu_len = mu_tmplts.mu_len;
     t_mu = (t0:mu_len-1)' * dt;
+    figure
     for i=1:mu_tmplts.mu_num
         subplot(5,5,i)
         
@@ -84,7 +86,33 @@ function [decomp_result] = PD3(sig, mu_len_t, isSilence)
             axis([t_mu(1),t_mu(mu_len),-1,1])
         end
     end
-
+    figure()
+    selecet_mu = 4;
+    test_index = find(mu_tmplts.tmplt_mem(1,:)==mu_tmplts.mu_id(selecet_mu));
+    for j=1:4
+        subplot(2,2,j)
+        for i=1:mu_tmplts.fire_times(selecet_mu)
+        %for i =1:5
+            plot(mu_tmplts.tmplt_mem(3+mu_len*(j-1):mu_len*(j-1)+mu_len+2,test_index(i)));
+            hold on
+            plot(mu_tmplts.shape(1+mu_len*(j-1):mu_len*j,selecet_mu),'*')
+        end
+    end
+%     figure()
+%     w=hanning(75);
+%     for j=1:4
+%         subplot(2,2,j)
+%         for i=1:10
+%             plot(w.*mu_tmplts.tmplt_mem(3+75*(j-1):75*(j-1)+77,test_index(3*i)));
+%             hold on
+%         end
+%     end
+%     figure
+%     for i=1:4
+%         subplot(2,2,i)
+%         plot(t_mu,mu_tmplts.shape(1+75*(i-1):75*i,16))
+%         hold on
+%     end
 % Generate firing trains
 %     [spikes, spike_times] = getspikes(fdata,thresh,spike_width,'MergeMode','All');
 %     [result, resdata] = getFiringsNew(fdata, spikes, spike_times, mu_tmplts);

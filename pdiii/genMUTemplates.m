@@ -21,9 +21,14 @@ function [ mu_tmplts ] = genMUTemplates(spikes, spike_times, max_ipi, noise_sigm
     % Settings
     op_chn_merge = 'Series';
     % Parameters
-    p_accept_region.k1sq = 0.5*0.5;
-    p_accept_region.k2sq = 0.5;
-    p_accept_region.k3sq = 1;
+    % for sEMG
+%     p_accept_region.k1sq = 0.5*0.5;
+%     p_accept_region.k2sq = 0.5;
+%     p_accept_region.k3sq = 1;
+    % for iEMG
+    p_accept_region.k1sq = 0.1;
+    p_accept_region.k2sq = 0.2;
+    p_accept_region.k3sq = 0.2;
 %     drawacceptregion(p_accept_region);
     min_firing_times = 10;
     [spike_width, spike_num, ch_num] = size(spikes);
@@ -96,7 +101,8 @@ function [ mu_tmplts ] = genMUTemplates(spikes, spike_times, max_ipi, noise_sigm
             template_s(:, mu_ind) = (5 * template_s(:, mu_ind) + candi_s) / 6;
             % Store the template data.
             tmplt_cnt = tmplt_cnt + 1;
-            tmplt_mem(:,tmplt_cnt) = template_s(:,mu_ind);
+            %tmplt_mem(:,tmplt_cnt) = template_s(:,mu_ind);
+            tmplt_mem(:,tmplt_cnt) = candi_s(:);
             tmplt_muidx(tmplt_cnt) = mu_ind;
             % IPI calculation
             ipi = tn - lastfirings(mu_ind);
@@ -120,7 +126,8 @@ function [ mu_tmplts ] = genMUTemplates(spikes, spike_times, max_ipi, noise_sigm
             ipi_nums(mu_num) = 0;
             % Store the template data.
             tmplt_cnt = tmplt_cnt + 1;
-            tmplt_mem(:,tmplt_cnt) = template_s(:,mu_num);
+            %tmplt_mem(:,tmplt_cnt) = template_s(:,mu_num);
+            tmplt_mem(:,tmplt_cnt) = candi_s(:);
             tmplt_muidx(tmplt_cnt) = mu_num;
         end
         

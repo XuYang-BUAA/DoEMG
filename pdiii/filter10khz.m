@@ -12,7 +12,7 @@ Fs = 10240;  % Sampling Frequency
 
 N   = 2;     % Order
 Fc1 = 500;  % First Cutoff Frequency
-Fc2 = 2000;  % Second Cutoff Frequency
+Fc2 = 1500;  % Second Cutoff Frequency
 
 % Construct an FDESIGN object and call its BUTTER method.
 h  = fdesign.bandpass('N,F3dB1,F3dB2', N, Fc1, Fc2, Fs);

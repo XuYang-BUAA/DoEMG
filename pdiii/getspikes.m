@@ -54,6 +54,18 @@ function [spikes, spike_times] = getspikes(sig, thresh, width, varargin)
                 peaks(spike_times{chn}) = max(peaks(spike_times{chn}), spike_peaks{chn});
             end
             [~, mergedspktms] = findpeaks(peaks, 'MinPeakDistance', floor(width/2));
+        case 'Vary'
+            peaks = zeros(sig_len,1);
+            for chn = 1:chn_num
+                peaks(spike_times{chn}) = max(peaks(spike_times{chn}), spike_peaks{chn});
+            end
+            distance = floor(width/2);
+            vary_range = floor(distance/2);
+            [~, mergedspktms] = findpeaks(peaks, 'MinPeakDistance', distance);
+            spik_range = repmat((-vary_range:vary_range),length(mergedspktms),1);
+            
+            mergedspktms = repmat(mergedspktms,1,2*vary_range+1)+spik_range;
+            mergedspktms = sort(reshape(mergedspktms,[],1));
         otherwise
             error('Unkown value for "MergeMode"!');
     end
