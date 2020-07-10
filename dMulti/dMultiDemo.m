@@ -49,7 +49,7 @@ figure
 for j=20
     for i=1:sEMG.ch(2)
         select_ch = [j,i];
-        plot(t,sEMG.data((j-1)*sEMG.ch(2)+i,:)+300*i+300*j)
+        plot(t,sEMG.data((j-1)*sEMG.ch(2)+i,:)+300*(i-1))
         hold on
     end
 end
